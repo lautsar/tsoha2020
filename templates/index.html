@@ -6,10 +6,23 @@
 Näillä sivuilla voit tutustua tuntitarjontaamme, varata ja perua tunteja sekä 
 ostaa sarjakorttejamme.
 </p>
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<form action="/login" method="POST">
+<p>Tunnus:<br>
+<input type="text" name="username"></p>
+<p>Salasana:<br>
+<input type="password" name="password"></p>
+<input type="submit" value="Kirjaudu">
+</form>
+{% endif %}
+
 <p>
 Vain rekisteröityneet käyttäjät voivat ostaa kortteja ja varata palveluitamme.
 Jos sinulla ei ole vielä käyttäjätunnusta, voit 
-<a href="/register.html">rekisteröidyä</a> asiakkaaksi. 
-Jos sinulla on jo käyttäjätunnus, <a href="/signin.html">kirjaudu sisään</a>.
+<a href="/register">rekisteröidyä</a> asiakkaaksi. 
+Jos sinulla on jo käyttäjätunnus, <a href="/login">kirjaudu sisään</a>.
 </p>
 {% endblock %}
