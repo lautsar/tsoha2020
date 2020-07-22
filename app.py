@@ -1,4 +1,4 @@
-from Flask import flask, render_templates
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/register")
+@app.route("/register.html")
 def register():
     return render_template("register.html")
 
