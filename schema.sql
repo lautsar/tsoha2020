@@ -14,11 +14,12 @@ CREATE TABLE lessons (
     id SERIAL PRIMARY KEY,
     level INTEGER,
     max INTEGER,
-    time DATETIME,
+    date DATE,
+    clock INTEGER,
     active BOOLEAN
 );
 
 CREATE TABLE cards (
     id SERIAL PRIMARY KEY,
-    valid DATETIME
+    valid DATE
 );
