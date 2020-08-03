@@ -4,21 +4,22 @@
 <h2>Tervetuloa Tranquil Tundran varausjärjestelmään!</h2>
 <p>
 Näillä sivuilla voit tutustua tuntitarjontaamme, varata ja perua tunteja sekä 
-ostaa sarjakorttejamme. Tähän lisätty tekstiä.
+ostaa sarjakorttejamme.
 </p>
-{% if session.username %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
+{% if session.user_id %}
+<p>Olet kirjautunut nimellä {{ session.user_name }}</p>
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
 <p>Vain rekisteröityneet ja kirjautuneet käyttäjät voivat ostaa kortteja ja varata palveluitamme. 
 Jos sinulla ei ole vielä käyttäjätunnusta, voit <a href="/register">rekisteröidyä</a> asiakkaaksi. </p>
 <p>Jos sinulla on jo käyttäjätunnus, kirjaudu sisään:</p>
+
 <form action="/login" method="POST">
-<p>Tunnus:<br>
-<input type="text" name="username"></p>
-<p>Salasana:<br>
-<input type="password" name="password"></p>
-<input type="submit" value="Kirjaudu">
+    <p>Tunnus:<br>
+    <input type="text" name="username"></p>
+    <p>Salasana:<br>
+    <input type="password" name="password"></p>
+    <input type="submit" value="Kirjaudu">
 </form>
 {% endif %}
 
