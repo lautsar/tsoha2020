@@ -15,7 +15,7 @@ CREATE TABLE lessons (
     level INTEGER,
     max INTEGER,
     date DATE,
-    clock INTEGER,
+    time INTEGER,
     active BOOLEAN
 );
 

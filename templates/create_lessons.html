@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>Luo tunteja</h3>
+
+<form action="/lessons" method="post">
+    Päivä: <input type="date" name="date">
+    <p>
+    Kellonaika: <input type="number" name="time" min = 0, max = 23>
+    <p>
+    Osallistujien maksimimäärä: <input type="number" name="max" min=1>
+    <p>
+    Taso: 
+    <p>
+        <input type="radio" name="level" value="1" checked> 1
+        <input type="radio" name="level" value="2"> 2
+        <input type="radio" name="level" value="3"> 3
+        <input type="radio" name="level" value="4"> 4
+        <input type="radio" name="level" value="5"> 5
+    <p>
+<input type="submit" value="Lisää tunti">
+</form>
+
+{% endblock %}
