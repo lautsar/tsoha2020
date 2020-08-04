@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>Varattavissa olevat tunnit</h3>
+
+<hr>
+{% for lesson in lessons %}
+{{ lesson[0] }}
+{{ lesson[1] }}
+{{ lesson[2] }}
+{{ lesson[3] }}
+{{ lesson[4] }}
+<hr>
+{% endfor %}
+
+{% endblock %}

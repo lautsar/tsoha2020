@@ -18,3 +18,10 @@ Perustoiminnot lyhyesti:
   - Lisätä tai poistaa yksittäisiä henkilöitä tunneilta
   - Seurata tunneille ilmoittautuneita henkilöitä (esim. osallistujalistojen tulostus) 
 
+2. välipalautuksen tilanne:
+
+- Tässä kohdassa selkeitä puutteita:
+  - Syötteiden oikeellisuuden tarkastelu
+  - Virhetilanteiden käsittely
+  - Käyttäjäroolien ja -oikeuksien huomiointi
+  - Sovelluksen ulkonäkö ja käytettävyys

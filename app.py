@@ -54,6 +54,11 @@ def logout():
 def purchase():
     return render_template("purchase.html")
 
+@app.route("/listlessons")
+def ls_lessons():
+    tunnit = lessons.get_list(db)
+    return render_template("list_lessons.html", lessons=tunnit)
+
 @app.route("/lessons", methods=["get","post"])
 def cr_lessons():
     if request.method == "GET":

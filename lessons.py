@@ -14,3 +14,11 @@ def create(date,time,max,level,db):
         print("4")
         return False
     return True
+
+def get_list(db):
+    try:
+        sql = "SELECT * FROM lessons"
+        result = db.session.execute(sql)
+    except:
+        return False
+    return result.fetchall()
