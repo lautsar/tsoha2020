@@ -23,3 +23,8 @@ CREATE TABLE cards (
     id SERIAL PRIMARY KEY,
     valid DATE
 );
+
+CREATE TABLE users_lessons (
+    user_id INTEGER,
+    lesson_id INTEGER
+);

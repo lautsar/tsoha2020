@@ -3,14 +3,35 @@
 {% block body %}
 <h3>Varattavissa olevat tunnit</h3>
 
-<hr>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Päivä</th>
+        <th>Kello</th>
+        <th>Taso</th>
+        <th>Maksimi</th>
+        <th>Vapaita paikkoja</th>
+        {% if session.user_id %}
+        <th></th>
+        {% endif %}
+    </tr>
 {% for lesson in lessons %}
-{{ lesson[0] }}
-{{ lesson[1] }}
-{{ lesson[2] }}
-{{ lesson[3] }}
-{{ lesson[4] }}
-<hr>
+    <tr>
+        <td>{{ lesson[0] }}</td>
+        <td>{{ lesson[3] }}</td>
+        <td>{{ lesson[4] }}</td>
+        <td>{{ lesson[1] }}</td>
+        <td>{{ lesson[2] }}</td>
+        <td>Vapaat</td>
+        {% if session.user_id %}
+        <td>
+            <form action="/book" method="post">
+                <input type="text" value={{ lesson[0] }} name="id"> 
+                <input type="submit" value="Varaa">
+            </form>
+        </td>
+        {% endif %}
+    </tr>
 {% endfor %}
-
+</table>
 {% endblock %}

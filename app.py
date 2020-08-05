@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 import users, lessons
@@ -7,7 +7,6 @@ import users, lessons
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
-#app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///lautanas"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -21,12 +20,11 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
     if request.method == "POST":
-        print("Tulee postiin")
         username = request.form["username"]
         password = request.form["password"]
         name = request.form["name"]
         level = int(request.form["level"])
-        print("Arvot tallentuvat")
+        
         if users.register(username,password,name,level,db):
             return redirect("/")
         else:
@@ -59,17 +57,26 @@ def ls_lessons():
     tunnit = lessons.get_list(db)
     return render_template("list_lessons.html", lessons=tunnit)
 
+@app.route("/book", methods=["get","post"])
+def book():
+    if request.method == "POST":
+        user_id = session["user_id"]
+        lesson_id = int(request.form["id"])
+        lessons.book_lesson(user_id,lesson_id,db)
+        return render_template("success.html", message = "Varaus onnistui.")
+
+
 @app.route("/lessons", methods=["get","post"])
 def cr_lessons():
     if request.method == "GET":
         return render_template("create_lessons.html")
     if request.method == "POST":
-        print("Tulee postiin")
+        
         date = request.form["date"]
         time = int(request.form["time"])
         max = int(request.form["max"])
         level = int(request.form["level"])
-        print("Arvot tallentuvat")
+        
         if lessons.create(date,time,max,level,db):
             return redirect("/lessons")
         else:
