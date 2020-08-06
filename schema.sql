@@ -21,7 +21,9 @@ CREATE TABLE lessons (
 
 CREATE TABLE cards (
     id SERIAL PRIMARY KEY,
-    valid DATE
+    times INTEGER,
+    valid DATE,
+    user_id INTEGER
 );
 
 CREATE TABLE users_lessons (

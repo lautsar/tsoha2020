@@ -26,7 +26,7 @@
         {% if session.user_id %}
         <td>
             <form action="/book" method="post">
-                <input type="text" value={{ lesson[0] }} name="id"> 
+                <input type="hidden" value={{ lesson[0] }} name="id"> 
                 <input type="submit" value="Varaa">
             </form>
         </td>

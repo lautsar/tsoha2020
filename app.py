@@ -2,7 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
-import users, lessons
+import users, lessons, cards
 
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
@@ -48,9 +48,15 @@ def logout():
     users.logout()
     return redirect("/")
 
-@app.route("/purchase")
+@app.route("/purchase", methods=["get","post"])
 def purchase():
-    return render_template("purchase.html")
+    if request.method == "POST":
+        user_id = session["user_id"]
+        times = int(request.form["card"])
+        cards.new(user_id,times,db)
+        return render_template("success.html", message = "Osto onnistui.")
+    if request.method == "GET":    
+        return render_template("purchase.html")
 
 @app.route("/listlessons")
 def ls_lessons():
