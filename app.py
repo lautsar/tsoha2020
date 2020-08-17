@@ -63,6 +63,12 @@ def ls_lessons():
     tunnit = lessons.get_list(db)
     return render_template("list_lessons.html", lessons=tunnit)
 
+@app.route("/reservations")
+def ls_reservations():
+    user_id = session["user_id"]
+    reservations = lessons.list_reservations(user_id, db)
+    return render_template("reservations.html", lessons=reservations)
+
 @app.route("/book", methods=["get","post"])
 def book():
     if request.method == "POST":
