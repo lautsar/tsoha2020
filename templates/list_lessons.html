@@ -5,24 +5,20 @@
 
 <table>
     <tr>
-        <th>Id</th>
         <th>Päivä</th>
         <th>Kello</th>
         <th>Taso</th>
-        <th>Maksimi</th>
-        <th>Vapaita paikkoja</th>
+        <th>Varauksia/maksimiosallistujamäärä</th>
         {% if session.user_id %}
         <th></th>
         {% endif %}
     </tr>
 {% for lesson in lessons %}
     <tr>
-        <td>{{ lesson[0] }}</td>
-        <td>{{ lesson[3] }}</td>
-        <td>{{ lesson[4] }}</td>
         <td>{{ lesson[1] }}</td>
         <td>{{ lesson[2] }}</td>
-        <td>Vapaat</td>
+        <td>{{ lesson[3] }}</td>
+        <td>{{ lesson[5] }} / {{ lesson[4] }}</td>
         {% if session.user_id %}
         <td>
             <form action="/book" method="post">
