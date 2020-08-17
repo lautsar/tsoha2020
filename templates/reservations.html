@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>Voimassa olevat varauksesi:</h3>
+
+<table>
+    <tr>
+        <th>Päivä</th>
+        <th>Kello</th>
+        <th>Taso</th>
+        <th></th>
+    </tr>
+{% for lesson in lessons %}
+    <tr>
+        <td>{{ lesson[1] }}</td>
+        <td>{{ lesson[2] }}</td>
+        <td>{{ lesson[3] }}</td>
+        <td>
+            <form action="/book" method="post">
+                <input type="hidden" value={{ lesson[0] }} name="id"> 
+                <input type="submit" value="Peru varaus">
+            </form>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
