@@ -17,7 +17,8 @@ def create(date,time,max,level,db):
 
 def get_list(db):
     try:
-        sql = "SELECT * FROM lessons WHERE date >= current_date ORDER BY date, time"
+        #sql = "SELECT * FROM lessons WHERE date >= current_date ORDER BY date, time"
+        sql = "SELECT L.id, L.date, L.time, L.level, L.max, COALESCE(C.res,0) FROM lessons L LEFT JOIN (SELECT lesson_id AS id, COUNT(user_id) AS res FROM users_lessons GROUP BY lesson_id) AS C ON L.id = C.id WHERE date >= current_date ORDER BY date, time;"
         result = db.session.execute(sql)
     except:
         return False
