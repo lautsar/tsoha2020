@@ -7,7 +7,7 @@ Näillä sivuilla voit tutustua tuntitarjontaamme, varata ja perua tunteja sekä
 ostaa sarjakorttejamme.
 </p>
 {% if session.user_id %}
-<p>Olet kirjautunut nimellä {{ session.user_name }}</p>
+<p>Olet kirjautunut nimellä {{ session.user_name }}, status {{ session.user_status }}</p>
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
 <p>Vain rekisteröityneet ja kirjautuneet käyttäjät voivat ostaa kortteja ja varata palveluitamme. 

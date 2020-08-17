@@ -8,18 +8,23 @@
     <body>
     <h1>Tranquil Tundran Varaussovellus</h1>
     <p>
-    <a href="/">Etusivu</a> || 
-    <a href="/register">Rekisteröidy</a> || 
-    <a href="/login">Kirjaudu</a> || 
-    <a href="/lessons">Luo tunteja</a> || 
-    <a href="/listlessons">Listaa tunnit</a> || 
-    <a href="/purchase">Osta sarjakortti</a> || 
-    <a href="/reservations">Omat varaukset</a> || 
+      {% if session.user_id %}
+      <a href="/">Etusivu</a> || 
+      <a href="/listlessons">Listaa tunnit</a> || 
+      <a href="/purchase">Osta sarjakortti</a> || 
+      <a href="/reservations">Omat varaukset</a> || 
+      <a href="/logout">Kirjaudu ulos</a>
+      <br>
+      <a href="/lessons">Luo tunteja</a> || 
+    {% else %}
+      <a href="/">Etusivu</a> || 
+      <a href="/register">Rekisteröidy</a> || 
+      <a href="/login">Kirjaudu</a> || 
+      <a href="/listlessons">Listaa tunnit</a>
+    {% endif %}
     </p>
       {% block body %}
-      <p>
-	Tähän tuodaan sisältö muualta.
-      </p>
+
       {% endblock %}
     </body>
   </html>
