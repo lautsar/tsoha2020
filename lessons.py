@@ -17,7 +17,7 @@ def create(date,time,max,level,db):
 
 def get_list(db):
     try:
-        sql = "SELECT * FROM lessons ORDER BY date, time"
+        sql = "SELECT * FROM lessons WHERE date >= current_date ORDER BY date, time"
         result = db.session.execute(sql)
     except:
         return False
@@ -35,3 +35,11 @@ def book_lesson(user_id,lesson_id,db):
     except:
         return False
     return True
+
+def list_reservations(user_id, db):
+    try:
+        sql = "SELECT L.id, L.date, L.time, L.level FROM users U LEFT JOIN users_lessons ON U.id = user_id LEFT JOIN lessons L on lesson_id = L.id WHERE L.date >= current_date AND U.id = :user_id;"
+        result = db.session.execute(sql, {"user_id":user_id})
+    except:
+        return False
+    return result.fetchall()
