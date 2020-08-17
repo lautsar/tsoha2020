@@ -43,3 +43,6 @@ def user_id():
 
 def user_name():
     return session.get("user_name")
+
+def user_status():
+    return session.get("user_status")
