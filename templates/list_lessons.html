@@ -3,12 +3,16 @@
 {% block body %}
 <h3>Varattavissa olevat tunnit</h3>
 
+<p> 
+    Voit varata tunteja, joilla on vapaita paikkoja ja joiden taso on korkeintaan {{ level }}.
+</p>
+
 <table>
     <tr>
         <th>Päivä</th>
         <th>Kello</th>
         <th>Taso</th>
-        <th>Varauksia/maksimiosallistujamäärä</th>
+        <th>Varauksia/maksimi </th>
         {% if session.user_id %}
         <th></th>
         {% endif %}
@@ -22,7 +26,10 @@
         {% if session.user_id %}
         <td>
             <form action="/book" method="post">
-                <input type="hidden" value={{ lesson[0] }} name="id"> 
+                <input type="hidden" value={{ lesson[0] }} name="id">
+                <input type="hidden" value={{ lesson[3] }} name="level">  
+                <input type="hidden" value={{ lesson[5] }} name="reservations">
+                <input type="hidden" value={{ lesson[4] }} name="max">  
                 <input type="submit" value="Varaa">
             </form>
         </td>

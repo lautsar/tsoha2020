@@ -61,7 +61,8 @@ def purchase():
 @app.route("/listlessons")
 def ls_lessons():
     tunnit = lessons.get_list(db)
-    return render_template("list_lessons.html", lessons=tunnit)
+    level = session["user_level"]
+    return render_template("list_lessons.html", lessons=tunnit, level=level)
 
 @app.route("/reservations")
 def ls_reservations():
@@ -73,7 +74,18 @@ def ls_reservations():
 def book():
     if request.method == "POST":
         user_id = session["user_id"]
+        user_level = session["user_level"]
         lesson_id = int(request.form["id"])
+        lesson_level = int(request.form["level"])
+        lesson_res = int(request.form["reservations"])
+        lesson_max = int(request.form["max"])
+
+        if lesson_res >= lesson_max:
+            return render_template("error.html", message = "Valitsemasi tunti on täynnä.")
+
+        if lesson_level > user_level:
+            return render_template("error.html", message = "Tasosi ei riitä valitsemallesi tunnille.")
+        
         lessons.book_lesson(user_id,lesson_id,db)
         return render_template("success.html", message = "Varaus onnistui.")
 
@@ -90,7 +102,8 @@ def cr_lessons():
         level = int(request.form["level"])
         
         if lessons.create(date,time,max,level,db):
-            return redirect("/lessons")
+            return render_template("success.html", message = "Tunnin lisäys onnistui.")
+            #return redirect("/lessons")
         else:
             return render_template("error.html", message = "Virhe tunnin luonnissa.")
 
