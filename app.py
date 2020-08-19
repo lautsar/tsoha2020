@@ -111,15 +111,13 @@ def cr_lessons():
 def confirm():
     if request.method == "GET":
         unconfirmed = users.list_unconfirmed(db)
-        print(str(len(unconfirmed)))
         return render_template("confirm.html", users = unconfirmed)
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        
-        if users.login(username,password, db):
-            return redirect("/")
-        else:
-            return render_template("error.html", message = "Väärä käyttäjätunnus tai salasana.")
+        id = request.form["id"]
+        level = request.form["level"]
+        users.confirm_level(id, level, db)
+
+        return render_template("success.html", message = "Käyttäjän taso vahvistettu.")
+
 #if __name__ == "__main__":
 #    app.run(debug=True)

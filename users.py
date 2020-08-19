@@ -41,7 +41,6 @@ def register(username,password,name,level,db):
         db.session.execute(sql, {"username":username,"password":hash_value,"name":name,"email":"email","level":level,"confirmed":'0',"admin":'0',"teacher":'0'})
         db.session.commit()
     except:
-        print("4")
         return False
     return login(username,password,db)
 
@@ -50,6 +49,12 @@ def list_unconfirmed(db):
     result = db.session.execute(sql)
     users = result.fetchall()
     return users
+
+def confirm_level(id, level, db):
+    sql = "UPDATE users SET level = :level, confirmed = 't'  WHERE id = :id"
+    db.session.execute(sql, {"id":id, "level":level})
+    db.session.commit()
+    return True
 
 def user_id():
     return session.get("user_id",0)
