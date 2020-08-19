@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>Tason vahvistusta odottavat käyttäjät</h3>
+
+
+
+<table>
+    <tr>
+        <th>Nimi</th>
+        <th>Käyttäjän antama taso</th>
+        <th>Vahvistettava taso</th>
+        <th></th>
+    </tr>
+{% for user in users %}
+    <tr>
+        <td>{{ user[1] }}</td>
+        <td>{{ user[2] }}</td>
+        <td>
+            <form action="/confirm" method="post">
+                <input type="number" name="level" min = 1, max = 5 value={{user[2]}}>
+            </td>
+            <td>
+                <input type="hidden" value={{ user[0] }} name="id">
+                <input type="submit" value="Vahvista">
+            </form>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
