@@ -107,5 +107,19 @@ def cr_lessons():
         else:
             return render_template("error.html", message = "Virhe tunnin luonnissa.")
 
+@app.route("/confirm", methods=["get","post"])
+def confirm():
+    if request.method == "GET":
+        unconfirmed = users.list_unconfirmed(db)
+        print(str(len(unconfirmed)))
+        return render_template("confirm.html", users = unconfirmed)
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        
+        if users.login(username,password, db):
+            return redirect("/")
+        else:
+            return render_template("error.html", message = "Väärä käyttäjätunnus tai salasana.")
 #if __name__ == "__main__":
 #    app.run(debug=True)
