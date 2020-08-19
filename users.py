@@ -45,6 +45,12 @@ def register(username,password,name,level,db):
         return False
     return login(username,password,db)
 
+def list_unconfirmed(db):
+    sql = "SELECT id, name, level FROM users WHERE confirmed = 'f'"
+    result = db.session.execute(sql)
+    users = result.fetchall()
+    return users
+
 def user_id():
     return session.get("user_id",0)
 
