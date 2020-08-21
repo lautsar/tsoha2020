@@ -45,11 +45,17 @@ def login():
 
 @app.route("/logout")
 def logout():
+    if users.user_status() == 0:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
     users.logout()
     return redirect("/")
 
 @app.route("/purchase", methods=["get","post"])
 def purchase():
+    if users.user_status() == 0:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
     if request.method == "POST":
         user_id = session["user_id"]
         times = int(request.form["card"])
@@ -66,32 +72,46 @@ def ls_lessons():
 
 @app.route("/reservations")
 def ls_reservations():
+    if users.user_status() == 0:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
     user_id = session["user_id"]
     reservations = lessons.list_reservations(user_id, db)
     return render_template("reservations.html", lessons=reservations)
 
 @app.route("/book", methods=["get","post"])
 def book():
+    if request.method == "GET":
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
     if request.method == "POST":
         user_id = session["user_id"]
         user_level = session["user_level"]
         lesson_id = int(request.form["id"])
         lesson_level = int(request.form["level"])
-        lesson_res = int(request.form["reservations"])
+        lesson_reservations = int(request.form["reservations"])
+        lesson_reserved = request.form["reserved"]
         lesson_max = int(request.form["max"])
+        tunnit = lessons.get_list(db)
+        
+        if lesson_reserved != 'None':
+            return render_template("list_lessons.html", lessons=tunnit, level=user_level, message = "Olet jo varannut tämän tunnin.")
 
-        if lesson_res >= lesson_max:
-            return render_template("error.html", message = "Valitsemasi tunti on täynnä.")
+        if lesson_reservations >= lesson_max:
+            return render_template("list_lessons.html", lessons=tunnit, level=user_level, message = "Valitsemasi tunti on täynnä.")
 
         if lesson_level > user_level:
-            return render_template("error.html", message = "Tasosi ei riitä valitsemallesi tunnille.")
+            return render_template("list_lessons.html", lessons=tunnit, level=user_level, message = "Tasosi ei riitä valitsemallesi tunnille.")
         
         lessons.book_lesson(user_id,lesson_id,db)
-        return render_template("success.html", message = "Varaus onnistui.")
+        return render_template("success.html", message = "Tunnin varaus onnistui.")
 
 
 @app.route("/lessons", methods=["get","post"])
 def cr_lessons():
+    if users.user_status() == 0 or users.user_status() == 1:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
     if request.method == "GET":
         return render_template("create_lessons.html")
     if request.method == "POST":
@@ -109,6 +129,9 @@ def cr_lessons():
 
 @app.route("/confirm", methods=["get","post"])
 def confirm():
+    if users.user_status() == 0 or users.user_status() == 1:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
     if request.method == "GET":
         unconfirmed = users.list_unconfirmed(db)
         return render_template("confirm.html", users = unconfirmed)
