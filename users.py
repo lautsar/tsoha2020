@@ -13,12 +13,13 @@ def login(username,password,db):
             session["user_id"] = user[1]
             session["user_name"] = user[2]#
 
+            # Set user status for session; if user is an admin (3), teacher (2) or normal user (1)
             if user[3] == True:
-                session["user_status"] = 1
+                session["user_status"] = 3
             elif user[4] == True:
                 session["user_status"] = 2
             else:
-                session["user_status"] = 3
+                session["user_status"] = 1
             
             if user[6] == True:
                 session["user_level"] = user[5]
@@ -63,4 +64,4 @@ def user_name():
     return session.get("user_name")
 
 def user_status():
-    return session.get("user_status")
+    return session.get("user_status",0)
