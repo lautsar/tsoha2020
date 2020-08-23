@@ -50,6 +50,7 @@ Opettaja-toimintojen testaamista varten käyttäjätunnus opettaja ja salasana o
 - Muita huomioita:
   - Syötteiden oikeellisuuden tarkastelu edelleen osittain vaiheessa. Odottamaton syöte saattaa siis aiheuttaa virhetilanteen, jota ei käsitellä.
   - Tietoturva-asiat osittain vaiheessa
+  - Taulukot tulostuvat varsin ahtaasti, css-tiedosto muutenkin vaiheessa
 
 ## 2. välipalautus:
 
