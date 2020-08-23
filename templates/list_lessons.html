@@ -8,18 +8,25 @@
 
 <h3>Varattavissa olevat tunnit</h3>
 
+{% if session.user_id %}
 <p> 
     Voit varata tunteja, joilla on vapaita paikkoja ja joiden taso on korkeintaan {{ level }}.
 </p>
+{% else %}
+<p>
+    Kirjaudu sisään varataksesi tunteja.
+</p>
+{% endif %}
 
 <table>
     <tr>
         <th>Päivä</th>
         <th>Kello</th>
         <th>Taso</th>
+        <th>Opettaja</th>
         <th>Varauksia/maksimi </th>
-        <th>Varattu</th>
         {% if session.user_id %}
+        <th>Varattu</th>
         <th></th>
         {% endif %}
     </tr>
@@ -28,10 +35,10 @@
         <td>{{ lesson[1] }}</td>
         <td>{{ lesson[2] }}</td>
         <td>{{ lesson[3] }}</td>
+        <td>{{ lesson[7] }}</td>
         <td>{{ lesson[5] }} / {{ lesson[4] }}</td>
-        <td>{% if lesson[6] %}X{% endif %}</td>
-        
         {% if session.user_id %}
+        <td>{% if lesson[6] %}X{% endif %}</td>
         <td>
             <form action="/book" method="post">
                 <input type="hidden" value={{ lesson[0] }} name="id">
