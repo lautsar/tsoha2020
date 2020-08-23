@@ -1,31 +1,43 @@
   <!DOCTYPE html>
-  <html>
+  
     <head>
       <meta charset="utf-8">
       <title>Tranquil Tundran Varaussovellus</title>
+      <link rel="stylesheet" href={{ url_for('static',filename='style.css') }}>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <body>
-    <h1>Tranquil Tundran Varaussovellus</h1>
-    <p>
-      {% if session.user_id %}
-      <a href="/">Etusivu</a> || 
-      <a href="/listlessons">Listaa tunnit</a> || 
-      <a href="/purchase">Osta sarjakortti</a> || 
-      <a href="/reservations">Omat varaukset</a> || 
-      <a href="/logout">Kirjaudu ulos</a>
-      <br>
-      <a href="/lessons">Luo tunteja</a> || 
-      <a href="/confirm">Vahvista käyttäjän taso</a>
-    {% else %}
-      <a href="/">Etusivu</a> || 
-      <a href="/register">Rekisteröidy</a> || 
-      <a href="/login">Kirjaudu</a> || 
-      <a href="/listlessons">Listaa tunnit</a>
-    {% endif %}
-    </p>
-      {% block body %}
+      <div class = "header">
+        <h1>Tranquil Tundra</h1>
+        <h2>Varausjärjestelmä</h2>
+      </div><div class ="navigation">
+        <nav>
+        <ul>
+          {% if session.user_id %}
+          <li><a href="/">Etusivu</a></li>
+          <li><a href="/listlessons">Listaa tunnit</a></li> 
+          <li><a href="/purchase">Osta sarjakortti</a></li> 
+          <li><a href="/reservations">Omat varaukset</a></li>
+          <li><a href="/info">Omat tiedot ja historia</a></li>
+          <li><a href="/logout">Kirjaudu ulos</a>
+          <li><a href="/lessons">Luo tunteja</a></li> 
+          <li><a href="/confirm">Vahvista käyttäjän taso</a>
+          <li><a href="/set_role">Muuta roolia</a>
+          {% else %}
+          <li><a href="/">Etusivu</a></li> 
+          <li><a href="/register">Rekisteröidy</a></li> 
+          <li><a href="/login">Kirjaudu</a></li> 
+          <li><a href="/listlessons">Listaa tunnit</a>
+          {% endif %}
+       </ul>
+      </nav>
+    </div>
+    
+      <div class = "content">
+        {% block body %}
 
-      {% endblock %}
+        {% endblock %}
+      </div>
     </body>
   </html>
