@@ -32,7 +32,6 @@ Opettaja-toimintojen testaamista varten käyttäjätunnus opettaja ja salasana o
   - Kirjautumaton käyttäjä:
     - Rekisteröityminen, kirjautuminen, tuntitarjonnan selaaminen
   - Kirjautunut käyttäjä (edellisten lisäksi):
-    - Enemmän tietoja 
     - Tuntien varaus ja peruminen, ml. eri vaatimusten tarkistus
     - Sarjakortin ostaminen
     - Omien varausten tarkastelu
