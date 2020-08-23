@@ -3,10 +3,26 @@ from flask import session
 #from werkzeug.security import check_password_hash, generate_password_hash
 
 def new(user,times,db):
-    try:
-        sql = "INSERT INTO cards (times,valid,user_id) VALUES (:times,:valid,:user_id)"
-        db.session.execute(sql, {"times":times,"valid":'2020-08-31',"user_id":user})
-        db.session.commit()
-    except:
-        return False
+    sql = "INSERT INTO cards (times,bought,user_id) VALUES (:times,current_date,:user_id)"
+    db.session.execute(sql, {"times":times,"user_id":user})
+    db.session.commit()
     return True
+
+def get_cards(user,db):
+    sql = "SELECT bought, times FROM cards WHERE user_id = :user_id ORDER BY id;"
+    result = db.session.execute(sql, {"user_id":user})
+    cards = result.fetchall()
+    return cards
+
+def bought_cards(user,db):
+    sql = "SELECT SUM(times) FROM cards WHERE user_id = :user_id;"
+    result = db.session.execute(sql, {"user_id":user})
+    bought = result.fetchone()
+
+    if bought[0] != None:
+        return bought[0]
+    else:
+        return 0
+
+#SELECT SUM(times) FROM cards WHERE user_id = 39;
+#SELECT COUNT(*) FROM users_lessons WHERE user_id = 39;
