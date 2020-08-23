@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>Muuta käyttäjän roolia</h3>
+
+<form action="/set_role" method="post">
+    <table>
+        <tr>
+            <td>Käyttäjän käyttäjätunnus:</td>
+            <td><input type="text" name="username"></td>
+        </tr>
+        <tr>
+            <td>Anna rooli:</td>
+            <td>
+                <input type="radio" name="role" value="1" checked> Peruskäyttäjä
+                <input type="radio" name="role" value="2"> Opettaja
+                <input type="radio" name="role" value="3"> Admin
+            </td>
+        </tr>
+    </table>
+
+    <input type="submit" value="Aseta käyttäjärooli">
+</form>
+
+{% endblock %}
