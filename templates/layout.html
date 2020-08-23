@@ -20,10 +20,16 @@
           <li><a href="/purchase">Osta sarjakortti</a></li> 
           <li><a href="/reservations">Omat varaukset</a></li>
           <li><a href="/info">Omat tiedot ja historia</a></li>
-          <li><a href="/logout">Kirjaudu ulos</a>
+          {% if session.user_role == 2 %}
+          <li><a href="/lessons">Luo tunteja</a></li> 
+          <li><a href="/confirm">Vahvista käyttäjän taso</a>
+          {% endif %}
+          {% if session.user_role == 3 %}
           <li><a href="/lessons">Luo tunteja</a></li> 
           <li><a href="/confirm">Vahvista käyttäjän taso</a>
           <li><a href="/set_role">Muuta roolia</a>
+          {% endif %}
+          <li><a href="/logout">Kirjaudu ulos</a>
           {% else %}
           <li><a href="/">Etusivu</a></li> 
           <li><a href="/register">Rekisteröidy</a></li> 

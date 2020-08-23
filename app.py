@@ -46,8 +46,8 @@ def login():
 
 @app.route("/logout")
 def logout():
-#    if users.user_role() == 0:
-#        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+    if users.user_role() == 0:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     users.logout()
     return redirect("/")
@@ -160,8 +160,8 @@ def confirm():
 
 @app.route("/set_role", methods=["get","post"])
 def set_role():
-#    if users.user_role() != 3:
-#        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+    if users.user_role() != 3:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     if request.method == "GET":
         return render_template("set_role.html")
