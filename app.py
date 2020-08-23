@@ -79,7 +79,8 @@ def ls_reservations():
 
     user_id = session["user_id"]
     reservations = lessons.list_reservations(user_id, db)
-    return render_template("reservations.html", lessons=reservations)
+    past = lessons.list_past(user_id, db)
+    return render_template("reservations.html", lessons=reservations, past=past)
 
 @app.route("/book", methods=["get","post"])
 def book():
@@ -104,6 +105,9 @@ def book():
 
         if lesson_level > user_level:
             return render_template("list_lessons.html", lessons=tunnit, level=user_level, message = "Tasosi ei riitä valitsemallesi tunnille.")
+
+        if lessons.number(user_id,db) >= cards.bought_cards(user_id,db):
+            return render_template("list_lessons.html", lessons=tunnit, level=user_level, message = "Ei jäljellä olevia kertoja kortissa.")
         
         lessons.book_lesson(user_id,lesson_id,db)
         return render_template("success.html", message = "Tunnin varaus onnistui.")
@@ -176,12 +180,12 @@ def set_role():
 
 @app.route("/info")
 def info():
+    if users.user_role() == 0:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
     user = users.user_id()
 
     card = cards.get_cards(user,db)
     bought = cards.bought_cards(user,db)
 
-    return render_template("cards.html", cards=card, bought=bought)
-
-#if __name__ == "__main__":
-#    app.run(debug=True)
+    return render_template("info.html", cards=card, bought=bought)
