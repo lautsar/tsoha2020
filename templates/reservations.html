@@ -24,4 +24,21 @@
     </tr>
 {% endfor %}
 </table>
+
+<h3>Menneet tunnit:</h3>
+
+<table>
+    <tr>
+        <th>Päivä</th>
+        <th>Kello</th>
+        <th>Taso</th>
+    </tr>
+{% for past in past %}
+    <tr>
+        <td>{{ past[0] }}</td>
+        <td>{{ past[1] }}</td>
+        <td>{{ past[2] }}</td>
+    </tr>
+{% endfor %}
+</table>
 {% endblock %}
