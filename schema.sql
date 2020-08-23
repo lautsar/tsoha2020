@@ -21,7 +21,7 @@ CREATE TABLE lessons (
 CREATE TABLE cards (
     id SERIAL PRIMARY KEY,
     times INTEGER,
-    bougth DATE,
+    bought DATE,
     user_id INTEGER REFERENCES users(id)
 );
 
