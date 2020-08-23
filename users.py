@@ -3,7 +3,7 @@ from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 def login(username,password,db):
-    sql = "SELECT password, id, name, admin, teacher, level, confirmed FROM users WHERE username=:username"
+    sql = "SELECT password, id, name, role, level, confirmed FROM users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if user == None:
@@ -11,18 +11,12 @@ def login(username,password,db):
     else:
         if check_password_hash(user[0],password):
             session["user_id"] = user[1]
-            session["user_name"] = user[2]#
+            session["user_name"] = user[2]
+            session["user_role"] = user[3]
 
-            # Set user status for session; if user is an admin (3), teacher (2) or normal user (1)
-            if user[3] == True:
-                session["user_status"] = 3
-            elif user[4] == True:
-                session["user_status"] = 2
-            else:
-                session["user_status"] = 1
             
-            if user[6] == True:
-                session["user_level"] = user[5]
+            if user[5] == True:
+                session["user_level"] = user[4]
             else:
                 session["user_level"] = 1
                 
@@ -33,13 +27,14 @@ def login(username,password,db):
 def logout():
     del session["user_id"]
     del session["user_name"]
-    del session["user_status"]
+    del session["user_level"]
+    del session["user_role"]
 
-def register(username,password,name,level,db):
+def register(username,password,name,email,level,db):
     hash_value = generate_password_hash(password)
     try:
-        sql = "INSERT INTO users (username,password,name,email,level,confirmed,admin,teacher) VALUES (:username,:password,:name,:email,:level,:confirmed,:admin,:teacher)"
-        db.session.execute(sql, {"username":username,"password":hash_value,"name":name,"email":"email","level":level,"confirmed":'0',"admin":'0',"teacher":'0'})
+        sql = "INSERT INTO users (username,password,name,email,level,confirmed,role) VALUES (:username,:password,:name,:email,:level,:confirmed,:role)"
+        db.session.execute(sql, {"username":username,"password":hash_value,"name":name,"email":email,"level":level,"confirmed":'0',"role":1})
         db.session.commit()
     except:
         return False
@@ -57,11 +52,26 @@ def confirm_level(id, level, db):
     db.session.commit()
     return True
 
+def set_role(username, role, db):
+    sql = "SELECT 1 FROM users WHERE username = :username"
+    result = db.session.execute(sql, {"username":username})
+    
+    if result.fetchone() == None:
+        return False
+
+    sql = "UPDATE users SET role = :role WHERE username = :username"
+    db.session.execute(sql, {"role":role, "username":username})
+    db.session.commit()
+    return True
+
 def user_id():
     return session.get("user_id",0)
 
 def user_name():
-    return session.get("user_name")
+    return session.get("user_name",0)
 
-def user_status():
-    return session.get("user_status",0)
+def user_role():
+    return session.get("user_role",0)
+
+def user_level():
+    return session.get("user_level",0)
