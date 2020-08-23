@@ -13,7 +13,6 @@ def create(date,time,max,level,teacher_id,db):
 
 def get_list(user_id,db):
     try:
-#        sql = "SELECT L.id, L.date, L.time, L.level, L.max, COALESCE(C.res,0), D.user_id FROM lessons L LEFT JOIN (SELECT lesson_id AS id, COUNT(user_id) AS res FROM users_lessons GROUP BY lesson_id) AS C ON L.id = C.id LEFT JOIN (SELECT * FROM users_lessons WHERE user_id = 39) as D ON L.id = D.lesson_id WHERE date >= current_date ORDER BY date, time;"
         sql = "SELECT L.id, L.date, L.time, L.level, L.max, COALESCE(C.res,0), D.user_id, U.name FROM lessons L LEFT JOIN (SELECT lesson_id AS id, COUNT(user_id) AS res FROM users_lessons GROUP BY lesson_id) AS C ON L.id = C.id LEFT JOIN (SELECT * FROM users_lessons WHERE user_id = :user_id) as D ON L.id = D.lesson_id LEFT JOIN users U ON L.teacher_id = U.id WHERE date >= current_date ORDER BY date, time;"
         result = db.session.execute(sql, {"user_id":user_id})
     except:
@@ -40,6 +39,11 @@ def cancel_reservation(user_id,lesson_id,db):
 
 def list_reservations(user_id, db):
     sql = "SELECT L.id, L.date, L.time, L.level FROM users U LEFT JOIN users_lessons ON U.id = user_id LEFT JOIN lessons L on lesson_id = L.id WHERE L.date >= current_date AND U.id = :user_id ORDER BY date, time;"
+    result = db.session.execute(sql, {"user_id":user_id})
+    return result.fetchall()
+
+def list_past(user_id, db):
+    sql = "SELECT L.date, L.time, L.level FROM users U LEFT JOIN users_lessons ON U.id = user_id LEFT JOIN lessons L on lesson_id = L.id WHERE L.date < current_date AND U.id = :user_id ORDER BY date, time DESC;"
     result = db.session.execute(sql, {"user_id":user_id})
     return result.fetchall()
 
