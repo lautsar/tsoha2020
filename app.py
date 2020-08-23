@@ -23,9 +23,10 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
         name = request.form["name"]
+        email = request.form["email"]
         level = int(request.form["level"])
         
-        if users.register(username,password,name,level,db):
+        if users.register(username,password,name,email,level,db):
             return redirect("/")
         else:
             return render_template("error.html", message = "Virhe käyttäjän luonnissa.")
@@ -45,15 +46,15 @@ def login():
 
 @app.route("/logout")
 def logout():
-    if users.user_status() == 0:
-        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+#    if users.user_role() == 0:
+#        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     users.logout()
     return redirect("/")
 
 @app.route("/purchase", methods=["get","post"])
 def purchase():
-    if users.user_status() == 0:
+    if users.user_role() == 0:
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     if request.method == "POST":
@@ -66,13 +67,14 @@ def purchase():
 
 @app.route("/listlessons")
 def ls_lessons():
-    tunnit = lessons.get_list(db)
-    level = session["user_level"]
+    user_id = users.user_id()
+    tunnit = lessons.get_list(user_id, db)
+    level = users.user_level()
     return render_template("list_lessons.html", lessons=tunnit, level=level)
 
 @app.route("/reservations")
 def ls_reservations():
-    if users.user_status() == 0:
+    if users.user_role() == 0:
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     user_id = session["user_id"]
@@ -92,7 +94,7 @@ def book():
         lesson_reservations = int(request.form["reservations"])
         lesson_reserved = request.form["reserved"]
         lesson_max = int(request.form["max"])
-        tunnit = lessons.get_list(db)
+        tunnit = lessons.get_list(user_id, db)
         
         if lesson_reserved != 'None':
             return render_template("list_lessons.html", lessons=tunnit, level=user_level, message = "Olet jo varannut tämän tunnin.")
@@ -106,10 +108,23 @@ def book():
         lessons.book_lesson(user_id,lesson_id,db)
         return render_template("success.html", message = "Tunnin varaus onnistui.")
 
+@app.route("/cancel_res", methods=["get","post"])
+def cancel_res():
+    if request.method == "GET":
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
+    if request.method == "POST":
+        user_id = session["user_id"]
+        lesson_id = int(request.form["id"])
+        
+        if lessons.cancel_reservation(user_id,lesson_id,db):
+            return render_template("success.html", message = "Tunnin peruminen onnistui.")
+        else:
+            return render_template("error.html", message = "Tunnin peruminen ei ole enää mahdollista.")
 
 @app.route("/lessons", methods=["get","post"])
 def cr_lessons():
-    if users.user_status() == 0 or users.user_status() == 1:
+    if users.user_role() == 0 or users.user_role() == 1:
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     if request.method == "GET":
@@ -120,8 +135,9 @@ def cr_lessons():
         time = int(request.form["time"])
         max = int(request.form["max"])
         level = int(request.form["level"])
+        id = users.user_id()
         
-        if lessons.create(date,time,max,level,db):
+        if lessons.create(date,time,max,level,id,db):
             return render_template("success.html", message = "Tunnin lisäys onnistui.")
             #return redirect("/lessons")
         else:
@@ -129,7 +145,7 @@ def cr_lessons():
 
 @app.route("/confirm", methods=["get","post"])
 def confirm():
-    if users.user_status() == 0 or users.user_status() == 1:
+    if users.user_role() == 0 or users.user_role() == 1:
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     if request.method == "GET":
@@ -141,6 +157,31 @@ def confirm():
         users.confirm_level(id, level, db)
 
         return render_template("success.html", message = "Käyttäjän taso vahvistettu.")
+
+@app.route("/set_role", methods=["get","post"])
+def set_role():
+#    if users.user_role() != 3:
+#        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+
+    if request.method == "GET":
+        return render_template("set_role.html")
+    if request.method == "POST":
+        username = request.form["username"]
+        role = request.form["role"]
+
+        if users.set_role(username, role, db):
+            return render_template("success.html", message = "Käyttäjän rooli muutettu.")
+        else:
+            return render_template("error.html", message = "Käyttäjää ei löydy.")
+
+@app.route("/info")
+def info():
+    user = users.user_id()
+
+    card = cards.get_cards(user,db)
+    bought = cards.bought_cards(user,db)
+
+    return render_template("cards.html", cards=card, bought=bought)
 
 #if __name__ == "__main__":
 #    app.run(debug=True)
