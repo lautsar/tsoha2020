@@ -58,6 +58,9 @@ def purchase():
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         user_id = session["user_id"]
         times = int(request.form["card"])
         cards.new(user_id,times,db)
@@ -88,6 +91,9 @@ def book():
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         user_id = session["user_id"]
         user_level = session["user_level"]
         lesson_id = int(request.form["id"])
@@ -118,6 +124,9 @@ def cancel_res():
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         user_id = session["user_id"]
         lesson_id = int(request.form["id"])
         
@@ -134,7 +143,9 @@ def cr_lessons():
     if request.method == "GET":
         return render_template("create_lessons.html")
     if request.method == "POST":
-        
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         date = request.form["date"]
         time = int(request.form["time"])
         max = int(request.form["max"])
@@ -156,6 +167,9 @@ def confirm():
         unconfirmed = users.list_unconfirmed(db)
         return render_template("confirm.html", users = unconfirmed)
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         id = request.form["id"]
         level = request.form["level"]
         users.confirm_level(id, level, db)
@@ -170,6 +184,9 @@ def set_role():
     if request.method == "GET":
         return render_template("set_role.html")
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         username = request.form["username"]
         role = request.form["role"]
 

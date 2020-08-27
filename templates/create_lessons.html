@@ -18,7 +18,9 @@
         <input type="radio" name="level" value="4"> 4
         <input type="radio" name="level" value="5"> 5
     <p>
-<input type="submit" value="Lisää tunti">
+
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="submit" value="Lisää tunti">
 </form>
 
 {% endblock %}

@@ -1,5 +1,6 @@
 #from db import db
 from flask import session
+import os
 from werkzeug.security import check_password_hash, generate_password_hash
 
 def login(username,password,db):
@@ -13,7 +14,7 @@ def login(username,password,db):
             session["user_id"] = user[1]
             session["user_name"] = user[2]
             session["user_role"] = user[3]
-
+            session["csrf_token"] = os.urandom(16).hex()
             
             if user[5] == True:
                 session["user_level"] = user[4]
@@ -29,6 +30,7 @@ def logout():
     del session["user_name"]
     del session["user_level"]
     del session["user_role"]
+    del session["csrf_token"]
 
 def register(username,password,name,email,level,db):
     hash_value = generate_password_hash(password)

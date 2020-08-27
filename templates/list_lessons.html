@@ -46,6 +46,7 @@
                 <input type="hidden" value={{ lesson[5] }} name="reservations">
                 <input type="hidden" value={{ lesson[4] }} name="max">
                 <input type="hidden" value={{ lesson[6] }} name="reserved">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="submit" value="Varaa">
             </form>
         </td>

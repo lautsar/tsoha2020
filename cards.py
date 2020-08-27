@@ -1,6 +1,5 @@
 #from db import db
 from flask import session
-#from werkzeug.security import check_password_hash, generate_password_hash
 
 def new(user,times,db):
     sql = "INSERT INTO cards (times,bought,user_id) VALUES (:times,current_date,:user_id)"
@@ -23,6 +22,3 @@ def bought_cards(user,db):
         return bought[0]
     else:
         return 0
-
-#SELECT SUM(times) FROM cards WHERE user_id = 39;
-#SELECT COUNT(*) FROM users_lessons WHERE user_id = 39;

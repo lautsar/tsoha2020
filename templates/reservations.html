@@ -17,7 +17,8 @@
         <td>{{ lesson[3] }}</td>
         <td>
             <form action="/cancel_res" method="post">
-                <input type="hidden" value={{ lesson[0] }} name="id"> 
+                <input type="hidden" value={{ lesson[0] }} name="id">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                 <input type="submit" value="Peru varaus">
             </form>
         </td>

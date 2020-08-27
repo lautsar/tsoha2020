@@ -8,7 +8,8 @@
         <input type="radio" name="card" value="5" checked> 5 kertaa (80 €, 17 €/kerta)<br>
         <input type="radio" name="card" value="10"> 10 kertaa (150 €, 15 €/kerta)
     </p>
-
+    
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     <input type="submit" value="Osta">
 </form>
 
