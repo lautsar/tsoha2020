@@ -37,6 +37,17 @@ def cancel_reservation(user_id,lesson_id,db):
         return False
     return True
 
+def cancel_lesson(lesson_id,db):
+    sql = "DELETE FROM users_lessons WHERE lesson_id = :lesson_id;"
+    db.session.execute(sql, {"lesson_id":lesson_id})
+    db.session.commit()
+
+    sql = "DELETE FROM lessons WHERE id = :id;"
+    db.session.execute(sql, {"id":lesson_id})
+    db.session.commit()
+
+    return True
+
 def list_reservations(user_id, db):
     sql = "SELECT L.id, L.date, L.time, L.level FROM users U LEFT JOIN users_lessons ON U.id = user_id LEFT JOIN lessons L on lesson_id = L.id WHERE L.date >= current_date AND U.id = :user_id ORDER BY date, time;"
     result = db.session.execute(sql, {"user_id":user_id})
@@ -66,3 +77,15 @@ def list_own_participants(user, db):
     sql = "SELECT L.date, L.time, L.level, U.name FROM lessons L, users_lessons J, users U WHERE L.date >= current_date AND J.user_id = U.id AND J.lesson_id = L.id AND L.teacher_id = :user_id ORDER BY date, time, name;"
     result = db.session.execute(sql, {"user_id":user})
     return result.fetchall()
+
+def list_taught(user, db):
+    sql ="SELECT id, date, time, level FROM lessons WHERE date >= current_date and teacher_id = :teacher_id ORDER BY date, time;"
+    result = db.session.execute(sql, {"teacher_id":user})
+    return result.fetchall()
+
+def list_all(db):
+    sql ="SELECT id, date, time, level FROM lessons WHERE date >= current_date ORDER BY date, time;"
+    result = db.session.execute(sql)
+    return result.fetchall()
+    
+    

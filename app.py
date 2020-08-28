@@ -150,15 +150,25 @@ def cr_lessons():
             abort(403)
 
         date = request.form["date"]
-        time = int(request.form["time"])
-        max = int(request.form["max"])
+        time = request.form["time"]
+        if time == '':
+            return render_template("error.html", message = "Täytä kaikki tiedot tuntia varten.")
+        else:
+            time = int(time)
+
+        max = request.form["max"]
+        if max == '':
+            return render_template("error.html", message = "Täytä kaikki tiedot tuntia varten.")
+        else:
+            time = int(time)
+
         level = int(request.form["level"])
         id = users.user_id()
         
         if lessons.create(date,time,max,level,id,db):
             return render_template("success.html", message = "Tunnin lisäys onnistui.")
         else:
-            return render_template("error.html", message = "Virhe tunnin luonnissa.")
+            return render_template("error.html", message = "Virhe tunnin luonnissa. Tarkasta täydennetyt tiedot.")
 
 @app.route("/confirm", methods=["get","post"])
 def confirm():
@@ -221,3 +231,26 @@ def list_participants():
     if users.user_role() == 3:
         participants = lessons.list_all_participants(db)
         return render_template("list_participants.html", participants = participants)
+
+@app.route("/cancel_lessons", methods=["get", "post"])
+def cancel_lessons():
+    if users.user_role() == 0 or users.user_role() == 1:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+    
+    if request.method=="GET":
+        if users.user_role() == 2:
+            participants = lessons.list_taught(users.user_id(), db)
+            return render_template("own_lessons.html", lessons = participants)
+    
+        if users.user_role() == 3:
+            participants = lessons.list_all(db)
+            return render_template("own_lessons.html", lessons = participants)
+    
+    if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
+        lesson_id = int(request.form["id"])
+        
+        if lessons.cancel_lesson(lesson_id,db):
+            return render_template("success.html", message = "Tunnin poisto onnistui.")

@@ -18,13 +18,13 @@
 </p>
 {% endif %}
 
-<table>
+<table class="list" width=100%>
     <tr>
         <th>Päivä</th>
         <th>Kello</th>
         <th>Taso</th>
         <th>Opettaja</th>
-        <th>Varauksia/maksimi </th>
+        <th>Varauksia/<br>maksimi </th>
         {% if session.user_id %}
         <th>Varattu</th>
         <th></th>
@@ -40,7 +40,7 @@
         {% if session.user_id %}
         <td>{% if lesson[6] %}X{% endif %}</td>
         <td>
-            <form action="/book" method="post">
+            <form action="/book" method="post">    
                 <input type="hidden" value={{ lesson[0] }} name="id">
                 <input type="hidden" value={{ lesson[3] }} name="level">  
                 <input type="hidden" value={{ lesson[5] }} name="reservations">

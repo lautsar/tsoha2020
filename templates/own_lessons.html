@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{% if session.user_role == 2 %}
+<h3>Tulossa olevat tunnit, joilla olet opettajana</h3>
+{% endif %}
+{% if session.user_role == 3 %}
+<h3>Tulossa olevat tunnit</h3>
+{% endif %}
+
+<table class="list" width=80%>
+    <tr>
+        <th>Päivä</th>
+        <th>Kello</th>
+        <th>Taso</th>
+        <th></th>
+    </tr>
+{% for lesson in lessons %}
+    <tr>
+        <td>{{ lesson[1] }}</td>
+        <td>{{ lesson[2] }}</td>
+        <td>{{ lesson[3] }}</td>
+        <td>
+            <form action="/cancel_lessons" method="post">
+                <input type="hidden" value={{ lesson[0] }} name="id">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                <input type="submit" value="Poista tunti">
+            </form>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}
