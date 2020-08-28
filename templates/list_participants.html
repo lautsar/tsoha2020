@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h3>Tunneille ilmoittautuneet henkilöt</h3>
+
+<table class="list" width=80%>
+    <tr>
+        <th>Päivä</th>
+        <th>Kello</th>
+        <th>Taso</th>
+        <th>Osallistujan nimi</th>
+    </tr>
+{% for participant in participants %}
+    <tr>
+        <td>{{ participant[0] }}</td>
+        <td>{{ participant[1] }}</td>
+        <td>{{ participant[2] }}</td>
+        <td>{{ participant[3] }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endblock %}
