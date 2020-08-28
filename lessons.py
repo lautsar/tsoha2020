@@ -57,5 +57,12 @@ def number(user,db):
     else:
         return 0
 
-#def list_participants(user_id, user_status, db):
-#    SELECT L.date, L.time, L.level, U.name FROM lessons L, users_lessons J, users U WHERE L.date >= current_date AND J.user_id = U.id AND J.lesson_id = L.id; 
+def list_all_participants(db):
+    sql = "SELECT L.date, L.time, L.level, U.name FROM lessons L, users_lessons J, users U WHERE L.date >= current_date AND J.user_id = U.id AND J.lesson_id = L.id ORDER BY date, time, name;"
+    result = db.session.execute(sql)
+    return result.fetchall()
+
+def list_own_participants(user, db):
+    sql = "SELECT L.date, L.time, L.level, U.name FROM lessons L, users_lessons J, users U WHERE L.date >= current_date AND J.user_id = U.id AND J.lesson_id = L.id AND L.teacher_id = :user_id ORDER BY date, time, name;"
+    result = db.session.execute(sql, {"user_id":user})
+    return result.fetchall()
