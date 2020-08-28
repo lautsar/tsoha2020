@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 import users, lessons, cards
@@ -25,6 +25,9 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         level = int(request.form["level"])
+
+        if username == "" or password == "" or name == "" or email == "":
+            return render_template("error.html", message = "Anna kaikki pyydetyt tiedot rekisteröitymistä varten.")
         
         if users.register(username,password,name,email,level,db):
             return redirect("/")
@@ -154,7 +157,6 @@ def cr_lessons():
         
         if lessons.create(date,time,max,level,id,db):
             return render_template("success.html", message = "Tunnin lisäys onnistui.")
-            #return redirect("/lessons")
         else:
             return render_template("error.html", message = "Virhe tunnin luonnissa.")
 
@@ -206,3 +208,16 @@ def info():
     bought = cards.bought_cards(user,db)
 
     return render_template("info.html", cards=card, bought=bought)
+
+@app.route("/list_participants")
+def list_participants():
+    if users.user_role() == 0 or users.user_role() == 1:
+        return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
+    
+    if users.user_role() == 2:
+        participants = lessons.list_own_participants(users.user_id(), db)
+        return render_template("list_participants.html", participants = participants)
+    
+    if users.user_role() == 3:
+        participants = lessons.list_all_participants(db)
+        return render_template("list_participants.html", participants = participants)
