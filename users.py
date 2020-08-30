@@ -33,13 +33,18 @@ def logout():
     del session["csrf_token"]
 
 def register(username,password,name,email,level,db):
-    hash_value = generate_password_hash(password)
-    try:
-        sql = "INSERT INTO users (username,password,name,email,level,confirmed,role) VALUES (:username,:password,:name,:email,:level,:confirmed,:role)"
-        db.session.execute(sql, {"username":username,"password":hash_value,"name":name,"email":email,"level":level,"confirmed":'0',"role":1})
-        db.session.commit()
-    except:
+    sql = "SELECT 1 FROM users WHERE username = :username"
+    result = db.session.execute(sql, {"username":username})
+    
+    if result.fetchone() != None:
         return False
+
+    hash_value = generate_password_hash(password)
+
+    sql = "INSERT INTO users (username,password,name,email,level,confirmed,role) VALUES (:username,:password,:name,:email,:level,:confirmed,:role)"
+    db.session.execute(sql, {"username":username,"password":hash_value,"name":name,"email":email,"level":level,"confirmed":'0',"role":1})
+    db.session.commit()
+
     return login(username,password,db)
 
 def list_unconfirmed(db):
