@@ -3,7 +3,8 @@
 {% block body %}
 <h3>Voimassa olevat varauksesi:</h3>
 
-<table>
+<p></p>
+<table class="list" width=80%>
     <tr>
         <th>Päivä</th>
         <th>Kello</th>
@@ -25,10 +26,11 @@
     </tr>
 {% endfor %}
 </table>
-
+</p>
+<p>
 <h3>Menneet tunnit:</h3>
 
-<table>
+<table class="list" width=80%>
     <tr>
         <th>Päivä</th>
         <th>Kello</th>
@@ -42,4 +44,5 @@
     </tr>
 {% endfor %}
 </table>
+</p>
 {% endblock %}

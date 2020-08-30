@@ -67,7 +67,7 @@ form {
     margin-left: 2em;   
 }
 
-form label, input{
+form label, input, button, hidden, submit {
     margin: auto 0;
 }
 

@@ -3,12 +3,10 @@
 {% block body %}
 <h3>Tason vahvistusta odottavat käyttäjät</h3>
 
-
-
-<table>
+<table class="list">
     <tr>
         <th>Nimi</th>
-        <th>Käyttäjän antama taso</th>
+        <th>Käyttäjän antama<br> taso</th>
         <th>Vahvistettava taso</th>
         <th></th>
     </tr>
@@ -18,7 +16,7 @@
         <td>{{ user[2] }}</td>
         <td>
             <form action="/confirm" method="post">
-                <input type="number" name="level" min = 1, max = 5 value={{user[2]}}>
+                <input type="number" name="level" min = 1 max = 5 value={{user[2]}}>
             </td>
             <td>
                 <input type="hidden" value={{ user[0] }} name="id">
