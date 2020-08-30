@@ -12,12 +12,18 @@
 <p> 
     Voit varata tunteja, joilla on vapaita paikkoja ja joiden taso on korkeintaan {{ level }}.
 </p>
+<p>
+    Tunnin varaaminen edellyttää, että sarjakortilla on käyttämättömiä kertoja. Sinulla on {{ times }} 
+    käyttämätöntä kertaa. Tarvittaessa voit <a href="/purchase">ostaa</a> lisää kertoja kortille tai 
+    <a href="/reservations">perua</a> olemassa olevia varauksia.
+</p>
 {% else %}
 <p>
     Kirjaudu sisään varataksesi tunteja.
 </p>
 {% endif %}
 
+<p>
 <table class="list" width=100%>
     <tr>
         <th>Päivä</th>
@@ -40,18 +46,20 @@
         {% if session.user_id %}
         <td>{% if lesson[6] %}X{% endif %}</td>
         <td>
-            <form action="/book" method="post">    
+            <form action="/book" method="post">
+                <input type="submit" value="Varaa">
                 <input type="hidden" value={{ lesson[0] }} name="id">
                 <input type="hidden" value={{ lesson[3] }} name="level">  
                 <input type="hidden" value={{ lesson[5] }} name="reservations">
                 <input type="hidden" value={{ lesson[4] }} name="max">
                 <input type="hidden" value={{ lesson[6] }} name="reserved">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <input type="submit" value="Varaa">
+                
             </form>
         </td>
         {% endif %}
     </tr>
 {% endfor %}
 </table>
+</p>
 {% endblock %}
