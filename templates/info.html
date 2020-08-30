@@ -3,13 +3,44 @@
 {% block body %}
 <h3>Käyttäjän tiedot</h3>
 
-<p><i>Tulossa...</i></p>
+<p>
+<table class="list" width=50%>
+    <tr>
+        <td>Nimi</td>
+        <td>{{ info[0] }}</td>
+    </tr>
+    <tr>
+        <td>Käyttäjätunnus</td>
+        <td>{{ info[1] }}</td>
+    </tr>
+    <tr>
+        <td>Taso</td>
+        <td>{{ info[2] }}</td>
+    </tr>
+    <tr>
+        <td>Rooli</td>
+        {% if info[4] == 3 %}
+        <td>admin</td>
+        {% endif %}
+        {% if info[4] == 2 %}
+        <td>opettaja</td>
+        {% endif %}
+        {% if info[4] == 1 %}
+        <td>varaaja</td>
+        {% endif %}
+    </tr>
+</table>
+</p>
+
+{% if info[3] == 0 %}
+<p>Tasoasi ei ole vielä vahvistettu. Ennen opettajan vahvistusta voit varata vain tunteja, joiden taso on 1.</p>
+{% endif %}
 
 <h3>Ostohistoria</h3>
 
 <p>Ostettuja kertoja yhteensä {{ bought }}.</p>
 
-<table>
+<table class="list" width=50%>
     <tr>
         <th>Ostopäivä</th>
         <th>Kertoja</th>

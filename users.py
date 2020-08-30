@@ -20,7 +20,7 @@ def login(username,password,db):
                 session["user_level"] = user[4]
             else:
                 session["user_level"] = 1
-                
+
             return True
         else:
             return False
@@ -65,6 +65,11 @@ def set_role(username, role, db):
     db.session.execute(sql, {"role":role, "username":username})
     db.session.commit()
     return True
+
+def get_user_info(id, db):
+    sql = "SELECT name, username, level, confirmed, role FROM users WHERE id = :id"
+    result = db.session.execute(sql, {"id":id})
+    return result.fetchone()
 
 def user_id():
     return session.get("user_id",0)

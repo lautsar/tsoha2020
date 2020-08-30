@@ -29,6 +29,9 @@ def register():
         if username == "" or password == "" or name == "" or email == "":
             return render_template("error.html", message = "Anna kaikki pyydetyt tiedot rekisteröitymistä varten.")
         
+        if len(username) > 50 or len(password) > 50 or len(name) > 50 or len(email) > 50:
+            return render_template("error.html", message = "Liian pitkä syöte.")
+        
         if users.register(username,password,name,email,level,db):
             return redirect("/")
         else:
@@ -76,7 +79,8 @@ def ls_lessons():
     user_id = users.user_id()
     tunnit = lessons.get_list(user_id, db)
     level = users.user_level()
-    return render_template("list_lessons.html", lessons=tunnit, level=level)
+    times = cards.bought_cards(user_id,db) - lessons.number(user_id,db)
+    return render_template("list_lessons.html", lessons=tunnit, level=level, times=times)
 
 @app.route("/reservations")
 def ls_reservations():
@@ -213,11 +217,12 @@ def info():
         return render_template("error.html", message = "Ei oikeutta nähdä sivua.")
 
     user = users.user_id()
+    info = users.get_user_info(user, db)
 
     card = cards.get_cards(user,db)
     bought = cards.bought_cards(user,db)
 
-    return render_template("info.html", cards=card, bought=bought)
+    return render_template("info.html", info=info, cards=card, bought=bought)
 
 @app.route("/list_participants")
 def list_participants():
